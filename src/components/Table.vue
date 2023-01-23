@@ -117,14 +117,14 @@ export default {
 
 <style scoped>
 .bg-sol-gradient {
-  background: linear-gradient(90deg, #9945FF 4.88%, #14F195 100%);
+  background-image: linear-gradient(90deg, #9945FF 4.88%, #14F195 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-fill-color: transparent;
 }
 .bg-eth-gradient {
-  background: linear-gradient(90deg, #3E3939 4.88%, #fafafa 100%);
+  background-image: linear-gradient(90deg, #676767 4.88%, #E2E2E2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
