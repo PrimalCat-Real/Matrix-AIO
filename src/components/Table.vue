@@ -27,21 +27,20 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="" v-for="(item, index) in responseData" :key="index">
+                <tr class="" v-for="(item, index) in filteredData" :key="index">
                     <td class="border-l-2 border-y-2 border-primary-gray">{{ ++index }}</td>
-                    <td class="border-y-2 border-primary-gray">{{ item.giveaway }}</td>
+                    <td class="border-y-2 border-primary-gray whitespace-nowrap overflow-hidden px-8">{{ item.giveaway }}</td>
                     <td class="border-y-2 border-primary-gray">{{ item.community }}</td>
                     <td class="border-y-2 border-primary-gray">{{ item.spot }}</td>
                     <td class="border-y-2 border-primary-gray">{{ item.entries }}</td>
-                    <td class="border-y-2 border-primary-gray">{{ item.type }}</td>
-                    <td class="border-y-2 border-primary-gray">{{ item.blockchain }}</td>
-                    <td class="border-r-2 border-y-2 border-primary-gray">100%</td>
+                    <td class="border-y-2 border-primary-gray uppercase">{{ item.type }}</td>
+                    <td class=" uppercase border-y-2 border-primary-gray " :class="blockchainColor(item.blockchain)">{{ item.blockchain }}</td>
+                    <td class="border-r-2 border-y-2 border-primary-gray" :style="textColor(item.chance)">{{ item.chance }}%</td>
                 </tr>
             </tbody>
         </table>
     </div>
 </template>
-
 <script>
 export default {
     data() {
@@ -51,15 +50,37 @@ export default {
             formattedData: [],
         }
     },
+    computed: {
+        filteredData() {
+            return this.formattedData.filter(item => {
+              return item.giveaway.toLowerCase().includes(this.term.toLowerCase())
+            })
+        },
+        
+    },
     methods: {
         onSearch(e){
             this.term = e.target.value;
-            this.responseData = this.formattedData.filter(item => {
-            return item.giveaway.toLowerCase().includes(this.term.toLowerCase())
-            })
-        }
+        },
+        textColor(chance) {
+        const color = Math.round((chance / 100) * 255);
+        const textColor = `rgb(${255 - color}, ${color}, 0)`;
+        const shadowColor = `rgba(${255 - color}, ${color}, 0, 0.39)`;
+        return {
+            color: textColor,
+            textShadow: `0px 0px 13px ${shadowColor}`
+        };
+        },
+        blockchainColor(blockchain) {
+            if (blockchain === "sol") {
+                return 'bg-sol-gradient';
+            } else if (blockchain === "eth") {
+                return 'bg-eth-gradient';
+            }
+        },
     },
     async mounted() {
+
     try {
       // @IMPORTANT Remove no-cors on production
       const response = await fetch('http://127.0.0.1:8069/allgiveaways')
@@ -68,18 +89,20 @@ export default {
         
         const formattedData = [];
         data.forEach((item, index) => {
+            
         item.giveaways.forEach(giveaway => {
             let obj = {};
             obj.giveaway = giveaway.title;
             obj.community = item.community;
             obj.spot = giveaway.mint_spots;
             obj.entries = giveaway.entries_count;
-            obj.type = giveaway.type;
+            obj.type = giveaway.selection_method;
             obj.blockchain = giveaway.blockchain;
+            obj.chance = giveaway.chance;
             formattedData.push(obj);
         });
         });
-        console.log(formattedData);
+        
         this.formattedData = formattedData
         this.responseData = formattedData
       } else {
@@ -92,6 +115,19 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.bg-sol-gradient {
+  background: linear-gradient(90deg, #9945FF 4.88%, #14F195 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+.bg-eth-gradient {
+  background: linear-gradient(90deg, #3E3939 4.88%, #fafafa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
 </style>

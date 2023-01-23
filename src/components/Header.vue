@@ -9,7 +9,7 @@
         </a>
     </div>
     <div class="logo text-4xl text-white"><span class="text-primary-orange">Subber</span> Parser by Smartix AIO</div>
-    <a class="how underline cursor-pointer text-3xl text-primary-gray">How ot use it?</a>
+    <a class="how underline cursor-pointer text-3xl text-primary-gray">How to use it?</a>
   </nav>
 </template>
 
