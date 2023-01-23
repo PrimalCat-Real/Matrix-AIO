@@ -13,6 +13,7 @@
             @input="onSearch">
             
         </div>
+        
         <table class="border-separate border-spacing-y-2 w-full table-fixed">
             <thead>
                 <tr class="">
@@ -39,12 +40,15 @@
                 </tr>
             </tbody>
         </table>
+        <h1 v-if="!isRequestSuccses" class="w-full text-4xl mt-20">Loading...</h1>
     </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
     data() {
         return {
+            isRequestSuccses: false,
             term: '',
             responseData: [],
             formattedData: [],
@@ -80,38 +84,35 @@ export default {
         },
     },
     async mounted() {
-
-    try {
-      // @IMPORTANT Remove no-cors on production
-      const response = await fetch('http://127.0.0.1:8069/allgiveaways')
-      if(response.ok) {
-        const data = await response.json()
-        
-        const formattedData = [];
-        data.forEach((item, index) => {
-            
-        item.giveaways.forEach(giveaway => {
-            let obj = {};
-            obj.giveaway = giveaway.title;
-            obj.community = item.community;
-            obj.spot = giveaway.mint_spots;
-            obj.entries = giveaway.entries_count;
-            obj.type = giveaway.selection_method;
-            obj.blockchain = giveaway.blockchain;
-            obj.chance = giveaway.chance;
-            formattedData.push(obj);
+        setInterval(() => {
+            axios.get('http://127.0.0.1:8069/allgiveaways')
+        .then(response => {
+            const data = response.data;
+            const formattedData = [];
+            data.forEach((item, index) => {
+            item.giveaways.forEach(giveaway => {
+                let obj = {};
+                obj.giveaway = giveaway.title;
+                obj.community = item.community;
+                obj.spot = giveaway.mint_spots;
+                obj.entries = giveaway.entries_count;
+                obj.type = giveaway.selection_method;
+                obj.blockchain = giveaway.blockchain;
+                obj.chance = giveaway.chance;
+                formattedData.push(obj);
+            });
+            });
+            this.formattedData = formattedData;
+            this.responseData = formattedData;
+            this.isRequestSuccses = response.ok
+        })
+        .catch(error => {
+            console.log(error);
         });
-        });
         
-        this.formattedData = formattedData
-        this.responseData = formattedData
-      } else {
-        throw new Error("Error fetching data")
-      }
-    } catch (error) {
-      console.log(error)
-        }
-    }
+        }, 10000)
+    }   
+      
 }
 </script>
 
