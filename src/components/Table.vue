@@ -104,7 +104,7 @@ export default {
             });
             this.formattedData = formattedData;
             this.responseData = formattedData;
-            this.isRequestSuccses = response.ok
+            this.isRequestSuccses = true
         })
         .catch(error => {
             console.log(error);
