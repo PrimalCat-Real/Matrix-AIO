@@ -24,7 +24,8 @@
                 <th class="w-[8%]">Entries</th>
                 <th class="w-[8%]">Type</th>
                 <th class="">Blockchain</th>
-                <th class="w-[15%]">Chances</th>
+                <th class="w-[10%]">End Time</th>
+                <th class="w-[10%]">Chances</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,7 +36,8 @@
                     <td class="border-y-2 border-primary-gray">{{ item.spot }}</td>
                     <td class="border-y-2 border-primary-gray">{{ item.entries }}</td>
                     <td class="border-y-2 border-primary-gray uppercase">{{ item.type }}</td>
-                    <td class=" uppercase border-y-2 border-primary-gray " :class="blockchainColor(item.blockchain)">{{ item.blockchain }}</td>
+                    <td class="uppercase border-y-2 border-primary-gray " :class="blockchainColor(item.blockchain)">{{ item.blockchain }}</td>
+                    <td class="border-y-2 border-primary-gray uppercase">{{ item.end_time }}</td>
                     <td class="border-r-2 border-y-2 border-primary-gray" :style="textColor(item.chance)">{{ item.chance }}%</td>
                 </tr>
             </tbody>
@@ -100,6 +102,7 @@ export default {
                 obj.chance = giveaway.chance;
                 obj.giveaway_url = giveaway.giveaway_url;
                 obj.community_url = giveaway.community_url;
+                obj.end_time = giveaway.end_time;
                 formattedData.push(obj);
             });
             });
