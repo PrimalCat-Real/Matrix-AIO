@@ -1,5 +1,5 @@
 <template>
-    <div class="text-white text-xl w-full flex flex-col justify-start items-start gap-5 h-fit absolute top-40 left-0 px-20 bg-primary-dark">
+    <div class="text-white text-xl w-full flex flex-col justify-start items-start gap-5 h-fit absolute top-40 left-0 px-1 sm:px-20 bg-primary-dark">
         <div class="w-full border-primary-gray border-2 flex items-center h-12">
             <div class="mx-3">
                 <svg width="20" height="20" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -30,8 +30,8 @@
             <tbody>
                 <tr class="" v-for="(item, index) in filteredData" :key="index">
                     <td class="border-l-2 border-y-2 border-primary-gray">{{ ++index }}</td>
-                    <td class="border-y-2 border-primary-gray whitespace-nowrap overflow-hidden px-8">{{ item.giveaway }}</td>
-                    <td class="border-y-2 border-primary-gray">{{ item.community }}</td>
+                    <td class="border-y-2 border-primary-gray whitespace-nowrap overflow-hidden px-8"><a :href="item.giveaway_url">{{ item.giveaway }}</a></td>
+                    <td class="border-y-2 border-primary-gray"><a :href="item.community_url">{{ item.community }}</a></td>
                     <td class="border-y-2 border-primary-gray">{{ item.spot }}</td>
                     <td class="border-y-2 border-primary-gray">{{ item.entries }}</td>
                     <td class="border-y-2 border-primary-gray uppercase">{{ item.type }}</td>
@@ -85,7 +85,7 @@ export default {
     },
     async mounted() {
         setInterval(() => {
-            axios.get('http://127.0.0.1:8069/allgiveaways')
+            axios.get('https://lionfish-app-luhdb.ondigitalocean.app/allgiveaways')
         .then(response => {
             const data = response.data;
             const formattedData = [];
@@ -99,6 +99,8 @@ export default {
                 obj.type = giveaway.selection_method;
                 obj.blockchain = giveaway.blockchain;
                 obj.chance = giveaway.chance;
+                obj.giveaway_url = giveaway.giveaway_url;
+                obj.community_url = giveaway.community_url;
                 formattedData.push(obj);
             });
             });
@@ -110,7 +112,7 @@ export default {
             console.log(error);
         });
         
-        }, 10000)
+        }, 5000)
     }   
       
 }
