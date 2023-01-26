@@ -45,6 +45,7 @@
 </template>
 <script>
 import axios from 'axios'
+
 export default {
     data() {
         return {
@@ -82,10 +83,8 @@ export default {
                 return 'bg-eth-gradient';
             }
         },
-    },
-    async mounted() {
-        setInterval(() => {
-            axios.get('https://lionfish-app-luhdb.ondigitalocean.app/allgiveaways')
+        fetchData(){
+    axios.get('https://lionfish-app-luhdb.ondigitalocean.app/allgiveaways')
         .then(response => {
             const data = response.data;
             const formattedData = [];
@@ -106,12 +105,17 @@ export default {
             });
             this.formattedData = formattedData;
             this.responseData = formattedData;
-            this.isRequestSuccses = true
+            this.isRequestSuccses = response.status ? true : false
         })
         .catch(error => {
             console.log(error);
         });
-        
+}
+    },
+    async mounted() {
+        this.fetchData()   
+        setInterval(() => {
+            this.fetchData()   
         }, 5000)
     }   
       
