@@ -75,7 +75,14 @@ export default {
     },
     methods: {
         unixToDate(unixTimestamp) {
-            return new Date(unixTimestamp * 1000).toLocaleString()
+                if (unixTimestamp == "TBA") {
+                    return "TBA";
+                } else {
+                    let diff = new Date(unixTimestamp * 1000) - new Date();
+                    let diffInMinutes = diff / (1000 * 60);
+                    let diffInHours = diffInMinutes / 60;
+                    return diff < 0 ? "Time Expired" : (diffInHours > 0 ? diffInHours.toFixed(0) + " hours" : diffInMinutes.toFixed(0) + " minutes");
+                }
         },
         onSearch(e){
             this.term = e.target.value;
