@@ -40,7 +40,7 @@
                     <td class="border-y-2 border-primary-gray">{{ item.entries }}</td>
                     <td class="border-y-2 border-primary-gray uppercase">{{ item.type }}</td>
                     <td class="uppercase border-y-2 border-primary-gray " :class="blockchainColor(item.blockchain)">{{ item.blockchain }}</td>
-                    <td class="border-y-2 border-primary-gray uppercase">{{ item.end_time }}</td>
+                    <td class="border-y-2 border-primary-gray uppercase">{{ unixToDate(item.end_time) }}</td>
                     <td class="border-r-2 border-y-2 border-primary-gray" :style="textColor(item.chance)">{{ item.chance }}%</td>
                 </tr>
             </tbody>
@@ -74,6 +74,9 @@ export default {
         
     },
     methods: {
+        unixToDate(unixTimestamp) {
+            return new Date(unixTimestamp * 1000).toLocaleString()
+        },
         onSearch(e){
             this.term = e.target.value;
         },
