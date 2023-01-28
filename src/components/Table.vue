@@ -9,7 +9,7 @@
             <input 
             type="text"
             class="h-10 p-2 bg-transparent w-full focus:outline-none"    
-            placeholder="Search by giveaway"
+            :placeholder="isGiveaways ? 'Search by giveaway': 'Search by community'"
             @input="onSearch">
             <div class="btn-wrapper flex gap-3 justify-between mx-3">
                 <button :class="this.isGiveaways ? 'active-btn' : 'inactive-btn'" @click="this.isGiveaways = true">Giveaway</button>
