@@ -58,7 +58,7 @@ export default {
             term: '',
             responseData: [],
             formattedData: [],
-            isGiveaways: false
+            isGiveaways: true
         }
     },
     computed: {
