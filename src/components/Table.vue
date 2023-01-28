@@ -34,8 +34,8 @@
             <tbody>
                 <tr class="" v-for="(item, index) in filteredData" :key="index">
                     <td class="border-l-2 border-y-2 border-primary-gray">{{ ++index }}</td>
-                    <td class="border-y-2 border-primary-gray whitespace-nowrap overflow-hidden px-8"><a :href="item.giveaway_url">{{ item.giveaway }}</a></td>
-                    <td class="border-y-2 border-primary-gray"><a :href="item.community_url">{{ item.community }}</a></td>
+                    <td class="border-y-2 border-primary-gray whitespace-nowrap overflow-hidden px-8"><a target="_blank"  :href="item.giveaway_url">{{ item.giveaway }}</a></td>
+                    <td class="border-y-2 border-primary-gray"><a target="_blank" :href="item.community_url">{{ item.community }}</a></td>
                     <td class="border-y-2 border-primary-gray">{{ item.spot }}</td>
                     <td class="border-y-2 border-primary-gray">{{ item.entries }}</td>
                     <td class="border-y-2 border-primary-gray uppercase">{{ item.type }}</td>
