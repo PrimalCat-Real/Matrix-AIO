@@ -11,7 +11,10 @@
             class="h-10 p-2 bg-transparent w-full focus:outline-none"    
             placeholder="Search by giveaway"
             @input="onSearch">
-            
+            <div class="btn-wrapper flex gap-3 justify-between mx-3">
+                <button :class="this.isGiveaways ? 'active-btn' : 'inactive-btn'" @click="this.isGiveaways = true">Giveaway</button>
+                <button :class="!this.isGiveaways ? 'active-btn' : 'inactive-btn'" @click="this.isGiveaways = false">Community</button>
+            </div>
         </div>
         
         <table class="border-separate border-spacing-y-2 w-full table-fixed">
@@ -24,8 +27,8 @@
                 <th class="w-[8%]">Entries</th>
                 <th class="w-[8%]">Type</th>
                 <th class="">Blockchain</th>
-                <th class="w-[10%]">End Time</th>
-                <th class="w-[10%]">Chances</th>
+                <th class="w-[15%]">End Time</th>
+                <th class="w-[7%]">Chances</th>
                 </tr>
             </thead>
             <tbody>
@@ -55,12 +58,17 @@ export default {
             term: '',
             responseData: [],
             formattedData: [],
+            isGiveaways: false
         }
     },
     computed: {
         filteredData() {
             return this.formattedData.filter(item => {
-              return item.giveaway.toLowerCase().includes(this.term.toLowerCase())
+                if(this.isGiveaways){
+                    return item.giveaway.toLowerCase().includes(this.term.toLowerCase())
+                }else if(!this.isGiveaways){
+                    return item.community.toLowerCase().includes(this.term.toLowerCase())
+                }
             })
         },
         

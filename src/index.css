@@ -7,3 +7,14 @@
       border-spacing: theme("spacing.3");
     }
   }
+
+@layer components {
+  .active-btn {
+    @apply bg-primary-orange outline-none border-none focus:outline-none hover:outline-none px-2
+  }
+}
+@layer components {
+  .inactive-btn {
+    @apply outline-none border-none focus:outline-none hover:outline-none px-2
+  }
+}
