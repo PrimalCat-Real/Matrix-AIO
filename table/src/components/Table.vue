@@ -1,0 +1,239 @@
+<template>
+    <div class="text-white text-xl w-full flex flex-col justify-start items-start gap-5 h-fit absolute top-40 left-0 px-1 sm:px-20 bg-primary-dark">
+        <div class="w-full border-primary-gray border-2 flex items-center h-12">
+            <div class="mx-3">
+                <svg width="20" height="20" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5.4 0H16.2V2.7H5.4V0ZM2.7 5.4V2.7H5.4V5.4H2.7ZM2.7 16.2H0V5.4H2.7V16.2ZM5.4 18.9H2.7V16.2H5.4V18.9ZM16.2 18.9V21.6H5.4V18.9H16.2ZM18.9 16.2H16.2V18.9H18.9V21.6H21.6V24.3H24.3V27H27V24.3H24.3V21.6H21.6V18.9H18.9V16.2ZM18.9 5.4H21.6V16.2H18.9V5.4ZM18.9 5.4V2.7H16.2V5.4H18.9Z" fill="#D9D9D9"/>
+                </svg>
+            </div>
+            <input 
+            type="text"
+            class="h-10 p-2 bg-transparent w-full focus:outline-none"    
+            :placeholder="isGiveaways ? 'Search by giveaway': 'Search by community'"
+            @input="onSearch">
+            <div class="btn-wrapper flex gap-3 justify-between mx-3">
+                <button :class="this.isGiveaways ? 'active-btn' : 'inactive-btn'" @click="this.isGiveaways = true">Giveaway</button>
+                <button :class="!this.isGiveaways ? 'active-btn' : 'inactive-btn'" @click="this.isGiveaways = false">Community</button>
+            </div>
+        </div>
+        
+        <table class="border-separate border-spacing-y-2 w-full table-fixed">
+            <thead>
+                <tr class="">
+                <th class="text-left w-[3%]">Id #</th>
+                <th class="w-[24%]">Giveaway</th>
+                <th class="w-[20%]">Community</th>
+                <th class="w-[8%]">Spots</th>
+                <th class="w-[8%]">Entries</th>
+                <th class="w-[8%]" @click="sortByType">Type</th>
+                <th class="">Blockchain</th>
+                <th class="w-[15%]" @click="sortByEndTime">End Time</th>
+                <th class="w-[7%] flex " @click="sortByChance">Chances</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="" v-for="(item, index) in filteredData" :key="index">
+                    <td class="border-l-2 border-y-2 border-primary-gray">{{ ++index }}</td>
+                    <td class="border-y-2 border-primary-gray whitespace-nowrap overflow-hidden px-8"><a target="_blank"  :href="item.giveaway_url">{{ item.giveaway }}</a></td>
+                    <td class="border-y-2 border-primary-gray"><a target="_blank" :href="item.community_url">{{ item.community }}</a></td>
+                    <td class="border-y-2 border-primary-gray">{{ item.spot }}</td>
+                    <td class="border-y-2 border-primary-gray">{{ item.entries }}</td>
+                    <td class="border-y-2 border-primary-gray uppercase">{{ item.type }}</td>
+                    <td class="uppercase border-y-2 border-primary-gray " :class="blockchainColor(item.blockchain)">{{ item.blockchain }}</td>
+                    <td class="border-y-2 border-primary-gray uppercase">{{ unixToDate(item.end_time) }}</td>
+                    <td class="border-r-2 border-y-2 border-primary-gray" :style="textColor(item.chance)">{{ item.chance }}%</td>
+                </tr>
+            </tbody>
+        </table>
+        <h1 v-if="!isRequestSuccses" class="w-full text-4xl mt-20">Loading...</h1>
+        <PagesNav
+        :total-items="this.dataSize"
+        :page-size="pageSize"
+        :current-page="currentPage"
+        @page-change="onPageChange"
+            ></PagesNav>
+    </div>
+
+</template>
+<script>
+import axios from 'axios'
+import ArrowIcon from './ArrowIcon.vue'
+import PagesNav from './PagesNav.vue'
+
+export default {
+    data() {
+        return {
+            isRequestSuccses: false,
+            term: "",
+            responseData: [],
+            formattedData: [],
+            isGiveaways: true,
+            // pagination test
+            pageSize: 50,
+            currentPage: 1,
+            dataSize: 0,
+            isSortedByChance: false,
+            isSortedByEndTime: false,
+            sortOrderByChance: 1,
+            sortOrderByEndTime: false,
+            sortOrderByType: false,
+        };
+    },
+    computed: {
+        // without pagination
+        // filteredData() {
+        //     return this.formattedData.filter(item => {
+        //         if (this.isGiveaways) {
+        //             return item.giveaway.toLowerCase().includes(this.term.toLowerCase());
+        //         }
+        //         else if (!this.isGiveaways) {
+        //             return item.community.toLowerCase().includes(this.term.toLowerCase());
+        //         }
+        //     });
+        // },
+        filteredData() {
+        const start = (this.currentPage - 1) * this.pageSize;
+        const end = start + this.pageSize;
+        return this.formattedData.slice(start, end).filter(item => {
+            if (this.isGiveaways) {
+            return item.giveaway.toLowerCase().includes(this.term.toLowerCase());
+            } else if (!this.isGiveaways) {
+            return item.community.toLowerCase().includes(this.term.toLowerCase());
+            }
+      });
+    }
+
+    },
+    methods: {
+        unixToDate(unixTimestamp) {
+            if (unixTimestamp == "TBA") {
+                return "TBA";
+            }
+            else {
+                let diff = new Date(unixTimestamp * 1000) - new Date();
+                let diffInMinutes = diff / (1000 * 60);
+                let diffInHours = diffInMinutes / 60;
+                return diff < 0 ? "Time Expired" : (diffInHours > 0 ? diffInHours.toFixed(0) + " hours" : diffInMinutes.toFixed(0) + " minutes");
+            }
+        },
+        onSearch(e) {
+            this.term = e.target.value;
+        },
+        textColor(chance) {
+            const color = Math.round((chance / 100) * 255);
+            const textColor = `rgb(${255 - color}, ${color}, 0)`;
+            const shadowColor = `rgba(${255 - color}, ${color}, 0, 0.39)`;
+            return {
+                color: textColor,
+                textShadow: `0px 0px 13px ${shadowColor}`
+            };
+        },
+        blockchainColor(blockchain) {
+            if (blockchain === "sol") {
+                return "bg-sol-gradient";
+            }
+            else if (blockchain === "eth") {
+                return "bg-eth-gradient";
+            }
+        },
+        fetchData() {
+            axios.get("https://lionfish-app-luhdb.ondigitalocean.app/allgiveaways")
+                .then(response => {
+                const data = response.data;
+                const formattedData = [];
+                data.forEach((item, index) => {
+                    item.giveaways.forEach(giveaway => {
+                        let obj = {};
+                        obj.giveaway = giveaway.title;
+                        obj.community = item.community;
+                        obj.spot = giveaway.mint_spots;
+                        obj.entries = giveaway.entries_count;
+                        obj.type = giveaway.selection_method;
+                        obj.blockchain = giveaway.blockchain;
+                        obj.chance = giveaway.chance;
+                        obj.giveaway_url = giveaway.giveaway_url;
+                        obj.community_url = giveaway.community_url;
+                        obj.end_time = giveaway.end_time;
+                        formattedData.push(obj);
+                    });
+                });
+                this.formattedData = formattedData;
+                this.responseData = formattedData;
+                this.dataSize = this.formattedData.length;
+                this.isRequestSuccses = response.status ? true : false;
+                // if(this.isSortedByEndTime){
+                //     this.sortByEndTime()
+                // }else if(this.isSortedByChance){
+                //     this.sortByChance()
+                // }else if(this.isSortedByChance && this.isSortedByEndTime){
+                //     console.log("sorted");
+                //     this.sortByEndTime()
+                //     this.sortByChance() 
+    
+                // }
+                // console.log("sorted like", this.isSortedByChance && this.isSortedByEndTime);
+                })
+                .catch(error => {
+                console.log(error);
+            });
+        },
+        sortByType() {
+            if (this.sortOrderByType) {
+            this.formattedData.sort((a, b) => a.type.localeCompare(b.type));
+            this.sortOrderByType = false;
+            } else {
+            this.formattedData.sort((a, b) => b.type.localeCompare(a.type));
+            this.sortOrderByType = true;
+            }
+        },
+        sortByChance(){
+            this.formattedData.sort((a, b) => this.sortOrderByChance * (b.chance - a.chance));
+            this.sortOrderByChance *= -1; // toggle the sort order
+        },
+        sortByEndTime(){
+            if (!this.sortOrderByEndTime) {
+                this.formattedData.sort((a, b) => {
+                    const aTime = a.end_time === "TBA" ? Number.MAX_SAFE_INTEGER: parseInt(a.end_time);
+                    const bTime = b.end_time === "TBA" ? Number.MAX_SAFE_INTEGER: parseInt(b.end_time);
+                    return (aTime - bTime);
+                });
+                this.sortOrderByEndTime = true;
+            } else {
+                this.formattedData.sort((a, b) => {
+                    const aTime = a.end_time === "TBA" ? Number.MAX_SAFE_INTEGER: parseInt(a.end_time);
+                    const bTime = b.end_time === "TBA" ? Number.MAX_SAFE_INTEGER: parseInt(b.end_time);
+                    return (bTime - aTime);
+                });
+                this.sortOrderByEndTime = false;
+            }
+        },
+        onPageChange(pageNumber) {
+            this.currentPage = pageNumber;
+        }
+    },
+    async mounted() {
+        this.fetchData();
+        setInterval(() => {
+            this.fetchData();
+        }, 10000);
+    },
+    components: { ArrowIcon, PagesNav }
+}
+</script>
+
+<style scoped>
+.bg-sol-gradient {
+  background-image: linear-gradient(90deg, #9945FF 4.88%, #14F195 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+.bg-eth-gradient {
+  background-image: linear-gradient(90deg, #676767 4.88%, #E2E2E2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+</style>
