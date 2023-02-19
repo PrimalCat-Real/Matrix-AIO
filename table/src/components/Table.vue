@@ -25,10 +25,10 @@
                 <th class="w-[20%]">Community</th>
                 <th class="w-[8%]">Spots</th>
                 <th class="w-[8%]">Entries</th>
-                <th class="w-[8%]" @click="sortByType">Type</th>
+                <th class="w-[8%] sort-btn" @click="sortByType">Type</th>
                 <th class="">Blockchain</th>
-                <th class="w-[15%]" @click="sortByEndTime">End Time</th>
-                <th class="w-[7%] flex " @click="sortByChance">Chances</th>
+                <th class="w-[15%] sort-btn" @click="sortByEndTime">End Time</th>
+                <th class="w-[7%] sort-btn " @click="sortByChance">Chances</th>
                 </tr>
             </thead>
             <tbody>

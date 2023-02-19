@@ -18,3 +18,9 @@
     @apply outline-none border-none focus:outline-none hover:outline-none px-2
   }
 }
+
+@layer components {
+  .sort-btn {
+    @apply cursor-pointer
+  }
+}
