@@ -100,7 +100,7 @@ export default {
             }
             });
 
-            this.dataSize = Math.ceil(filteredData.length / this.pageSize);
+            this.dataSize = filteredData.length
 
             const start = (this.currentPage - 1) * this.pageSize;
             const end = start + this.pageSize;
