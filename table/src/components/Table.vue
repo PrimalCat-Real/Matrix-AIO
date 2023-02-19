@@ -81,27 +81,27 @@ export default {
     },
     computed: {
         // without pagination
-        // filteredData() {
-        //     return this.formattedData.filter(item => {
-        //         if (this.isGiveaways) {
-        //             return item.giveaway.toLowerCase().includes(this.term.toLowerCase());
-        //         }
-        //         else if (!this.isGiveaways) {
-        //             return item.community.toLowerCase().includes(this.term.toLowerCase());
-        //         }
-        //     });
-        // },
         filteredData() {
-        const start = (this.currentPage - 1) * this.pageSize;
-        const end = start + this.pageSize;
-        return this.formattedData.slice(start, end).filter(item => {
-            if (this.isGiveaways) {
-            return item.giveaway.toLowerCase().includes(this.term.toLowerCase());
-            } else if (!this.isGiveaways) {
-            return item.community.toLowerCase().includes(this.term.toLowerCase());
-            }
-      });
-    }
+            return this.formattedData.filter(item => {
+                if (this.isGiveaways) {
+                    return item.giveaway.toLowerCase().includes(this.term.toLowerCase());
+                }
+                else if (!this.isGiveaways) {
+                    return item.community.toLowerCase().includes(this.term.toLowerCase());
+                }
+            });
+        },
+    //     filteredData() {
+    //     const start = (this.currentPage - 1) * this.pageSize;
+    //     const end = start + this.pageSize;
+    //     return this.formattedData.slice(start, end).filter(item => {
+    //         if (this.isGiveaways) {
+    //         return item.giveaway.toLowerCase().includes(this.term.toLowerCase());
+    //         } else if (!this.isGiveaways) {
+    //         return item.community.toLowerCase().includes(this.term.toLowerCase());
+    //         }
+    //   });
+    // }
 
     },
     methods: {
