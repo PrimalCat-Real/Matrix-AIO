@@ -92,17 +92,20 @@ export default {
         //     });
         // },
         filteredData() {
-            const filtered = this.formattedData.filter(item => {
+            const filteredData = this.formattedData.filter(item => {
             if (this.isGiveaways) {
-            return item.giveaway.toLowerCase().includes(this.term.toLowerCase());
+                return item.giveaway.toLowerCase().includes(this.term.toLowerCase());
             } else if (!this.isGiveaways) {
                 return item.community.toLowerCase().includes(this.term.toLowerCase());
-                }
+            }
             });
+
+            this.dataSize = Math.ceil(filteredData.length / this.pageSize);
+
             const start = (this.currentPage - 1) * this.pageSize;
             const end = start + this.pageSize;
-            return filtered.slice(start, end);
-            }
+            return filteredData.slice(start, end);
+        }
 
     },
     methods: {
