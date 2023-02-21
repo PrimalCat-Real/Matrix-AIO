@@ -1,5 +1,5 @@
 <template>
-  <div class="pagination w-full h-10 mt-auto mb-6 z-10 flex justify-center items-center gap-5">
+  <div class="pagination w-full h-10 mt-auto mb-6 z-10 flex justify-center items-center gap-5 ">
     <button class="focus:outline-none px-4" v-if="currentPage > 1" @click="onPageChange(currentPage - 1)">Prev</button>
     <button
       class="focus:outline-none px-4 min-h-[24px] min-w-[24px] flex items-center justify-center"

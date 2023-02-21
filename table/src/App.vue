@@ -26,6 +26,6 @@ html, body {
     height: fit-content;
     margin: 0;
     
-    font-family: 'VT323', monospace;
+    font-family: 'Space Grotesk', sans-serif;
 }
 </style>

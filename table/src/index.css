@@ -10,12 +10,18 @@
 
 @layer components {
   .active-btn {
-    @apply bg-primary-orange outline-none border-none focus:outline-none hover:outline-none px-2
+    @apply bg-secondary-light font-bold font-inter text-primary-dark outline-none transition-all duration-300 ease-in-out border-none focus:outline-none hover:outline-none px-6 h-8 rounded-full
   }
 }
 @layer components {
   .inactive-btn {
-    @apply outline-none border-none focus:outline-none hover:outline-none px-2
+    @apply outline-none border-none focus:outline-none hover:outline-none px-6 h-8 transition-all duration-300 ease-in-out
+  }
+}
+
+@layer components {
+  .tag-wrapper{
+    @apply flex justify-center items-center w-full
   }
 }
 
