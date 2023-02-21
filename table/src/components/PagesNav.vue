@@ -2,10 +2,10 @@
   <div class="pagination w-full h-10 mt-auto mb-6 z-10 flex justify-center items-center gap-5 ">
     <button class="focus:outline-none px-4" v-if="currentPage > 1" @click="onPageChange(currentPage - 1)">Prev</button>
     <button
-      class="focus:outline-none px-4 min-h-[24px] min-w-[24px] flex items-center justify-center"
+      class="focus:outline-none px-4 min-h-[24px] min-w-[24px] flex items-center justify-center transition-all duration-200"
       v-for="pageNumber in pageNumbers"
       :key="pageNumber"
-      :class="{ active: pageNumber === currentPage }"
+      :class="this.currentPage === pageNumber  && 'border-2 !border-secondary-gray'"
       @click="onPageChange(pageNumber)"
     >
       {{ pageNumber }}
@@ -46,7 +46,8 @@ export default {
   },
   methods: {
     onPageChange(pageNumber) {
-      this.$emit('page-change', pageNumber);
+      this.$emit('update:current-page', pageNumber);
+      console.log(this.currentPage === pageNumber );
     }
   }
 }

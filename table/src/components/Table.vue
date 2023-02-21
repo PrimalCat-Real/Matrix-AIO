@@ -114,8 +114,8 @@
         <PagesNav
         :total-items="this.dataSize"
         :page-size="pageSize"
-        :current-page="currentPage"
-        @page-change="onPageChange"
+        :current-page="currentPage" 
+        @update:current-page="currentPage = $event"
             ></PagesNav>
     </div>
 
@@ -171,6 +171,7 @@ export default {
 
             const start = (this.currentPage - 1) * this.pageSize;
             const end = start + this.pageSize;
+            console.log(filteredData.slice(start, end))
             return filteredData.slice(start, end);
         }
 
@@ -189,6 +190,7 @@ export default {
         },
         onSearch(e) {
             this.term = e.target.value;
+            this.currentPage = 1
         },
         textColor(chance) {
             const color = Math.round((chance / 100) * 255);
@@ -280,6 +282,7 @@ export default {
         },
         onPageChange(pageNumber) {
             this.currentPage = pageNumber;
+            console.log(this.currentPage);
         }
     },
     async mounted() {
