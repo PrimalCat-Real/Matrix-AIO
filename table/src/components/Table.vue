@@ -288,8 +288,10 @@ export default {
     async mounted() {
         this.fetchData();
         setInterval(() => {
-            this.fetchData();
-        }, 100000);
+            if(!this.isRequestSuccses){
+                this.fetchData();
+            }     
+        }, 5000);
     },
     components: { ArrowIcon, PagesNav, SolIcon }
 }
