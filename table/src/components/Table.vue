@@ -8,7 +8,7 @@
             </div>
             <input 
             type="text"
-            class="h-10 p-2 bg-transparent w-full focus:outline-none placeholder-white text-xl"    
+            class="h-10 p-2 bg-transparent w-full focus:outline-none placeholder-secondary-light text-xl"    
             :placeholder="isGiveaways ? 'Search by giveaway': 'Search by community'"
             @input="onSearch">
             <div class="btn-wrapper flex gap-3 justify-between mx-3 items-center min-w-fit text-base">
@@ -105,8 +105,8 @@
                         <!-- other text -->
                         <!-- <span  v-if="item.blockchain != 'sol' && item.blockchain != 'eth'">{{ item.blockchain }}</span> -->
                     </td>
-                    <td class="border-y-2 border-primary-gray uppercase">{{ unixToDate(item.end_time) }}</td>
-                    <td class="border-r-2 border-y-2 border-primary-gray" :style="textColor(item.chance)">{{ item.chance }}</td>
+                    <td class="border-y-2 border-primary-gray uppercase font-bold">{{ unixToDate(item.end_time) }}</td>
+                    <td class="border-r-2 border-y-2 border-primary-gray font-bold" :style="textColor(item.chance)">{{ item.chance }}</td>
                 </tr>
             </tbody>
         </table>
