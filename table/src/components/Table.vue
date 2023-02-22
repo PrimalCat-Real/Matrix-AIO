@@ -1,6 +1,7 @@
 <template>
     <div class="text-white text-xl w-full flex flex-col justify-start items-start gap-5 h-fit absolute top-20 left-0 px-1 sm:px-20 bg-primary-dark">
-        <div class="w-full border-primary-gray border-2 flex items-center h-14 rounded-sm bg-[#00000032]">
+        <div class="input-wrapper flex w-full gap-3">
+            <div class="w-full border-primary-gray border-2 flex items-center h-14 rounded-sm bg-[#00000032]">
             <div class="mx-4">
                 <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M15.9663 17.1599C14.3024 18.5526 12.1592 19.393 9.82263 19.393C4.5385 19.393 0.25 15.1045 0.25 9.8215C0.25 4.5385 4.5385 0.25 9.82263 0.25C15.1045 0.25 19.3941 4.5385 19.3941 9.8215C19.3941 12.1593 18.5537 14.3035 17.161 15.9651L22.5036 21.3089C22.6679 21.4731 22.75 21.6891 22.75 21.9062C22.75 22.5666 22.1459 22.75 21.9062 22.75C21.6903 22.75 21.4743 22.6679 21.3089 22.5025L15.9663 17.1599ZM9.82263 1.93862C5.47112 1.93862 1.93975 5.47113 1.93975 9.8215C1.93975 14.1719 5.47112 17.7044 9.82263 17.7044C14.1719 17.7044 17.7055 14.1719 17.7055 9.8215C17.7055 5.47113 14.1719 1.93862 9.82263 1.93862Z" fill="white"/>
@@ -19,6 +20,13 @@
                 </div>
             </div>
         </div>
+        <div @click="this.fetchData()" class="refresh border-primary-gray border-2 h-14 w-14 pr-1 flex items-center justify-center cursor-pointer">
+            <svg width="25" height="28" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14.7085 5.29134C14.0917 4.67038 13.3581 4.17764 12.55 3.84153C11.742 3.50543 10.8753 3.3326 10.0001 3.33301C6.3168 3.33301 3.3418 6.31634 3.3418 9.99968C3.3418 13.683 6.3168 16.6663 10.0001 16.6663C13.1085 16.6663 15.7001 14.5413 16.4418 11.6663H14.7085C14.3652 12.6409 13.7279 13.485 12.8846 14.082C12.0413 14.6791 11.0334 14.9997 10.0001 14.9997C7.2418 14.9997 5.00013 12.758 5.00013 9.99968C5.00013 7.24134 7.2418 4.99968 10.0001 4.99968C11.3835 4.99968 12.6168 5.57468 13.5168 6.48301L10.8335 9.16634H16.6668V3.33301L14.7085 5.29134Z" fill="#F8F8F8"/>
+            </svg>
+        </div>
+        </div>
+        
         
         <table class="border-separate border-spacing-y-2 w-full table-fixed text-secondary-light">
             <thead class="h-12">
