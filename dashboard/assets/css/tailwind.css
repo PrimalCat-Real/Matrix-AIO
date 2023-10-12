@@ -1,9 +1,0 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer components {
-    .login-btn{
-        @apply border-2 border-light-text rounded-lg h-14 w-14 flex justify-center items-center dark:border-dark-text
-    }
-}
